@@ -1,0 +1,131 @@
+/* Use a preprocessor to write more efficient and modular CSS code */
+@media (max-width: 768px) {
+  /* Target the canvas container specifically */
+  .canvas-container {
+    width: 100%;
+    height: 400px;
+  }
+  
+  /* Hide the control element for smaller screens */
+  .control {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Target the canvas container specifically */
+  .canvas-container {
+    width: 100%;
+    height: 600px;
+  }
+  
+  /* Show the control element for larger screens */
+  .control {
+    display: block;
+    margin-top: 20px;
+  }
+}
+
+@media (min-width: 1025px) {
+  /* Target the canvas container specifically */
+  .canvas-container {
+    width: 100%;
+    height: 800px;
+  }
+  
+  /* Show the control element for largest screens */
+  .control {
+    display: block;
+    margin-top: 20px;
+  }
+}
+
+/* Style the canvas element consistently across all media queries */
+.canvas-container > canvas {
+  display: block;
+  margin-top: 20px;
+}
+
+/* Style the reset button consistently */
+.reset {
+  font-size: 16px;
+  color: #fff;
+  background-color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Style the output element consistently */
+.output {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 20px;
+}
+/* Add comments to explain the purpose of each section */
+
+
+/* Output element styles */
+.output {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 20px;
+}
+
+/* Reset button styles */
+.reset {
+  font-size: 16px;
+  color: #fff;
+  background-color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Media queries for different screen sizes */
+@media (max-width: 768px) {
+  /* Style the canvas container differently for small screens */
+  .canvas-container {
+    width: 100%;
+    height: 400px;
+  }
+  
+  /* Hide the control element for smaller screens */
+  .control {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Style the canvas container differently for medium screens */
+  .canvas-container {
+    width: 100%;
+    height: 600px;
+  }
+  
+  /* Show the control element for larger screens */
+  .control {
+    display: block;
+    margin-top: 20px;
+  }
+}
+
+@media (min-width: 1025px) {
+  /* Style the canvas container differently for large screens */
+  .canvas-container {
+    width: 100%;
+    height: 800px;
+  }
+  
+  /* Show the control element for largest screens */
+  .control {
+    display: block;
+    margin-top: 20px;
+  }
+}
