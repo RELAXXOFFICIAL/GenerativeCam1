@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sound Reactive Art</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+    }
+    canvas {
+      display: block;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="myCanvas" width="400" height="400"></canvas>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.0.0/dist/tf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web-audio-api/1.0.6/webaudio.min.js"></script>
+  <script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+    const audioCtx = new AudioContext();
+    const source = audioCtx.createMediaStreamSource(stream);
+    source.connect(audioCtx.destination);
+    
+    let noiseVector = new Float32Array(100);
+    for (let i = 0; i < 100; i++) {
+      noiseVector[i] = Math.random() * 2 - 1;
+    }
+    
+    async function draw() {
+      // Update the audio features
+      const audioFeatures = await analyzeAudio(audioCtx, stream);
+      
+      // Generate a new image based on the updated noise vector
+      const imageData = generateImageWithSound(noiseVector, audioFeatures);
+      
+      // Draw the image on the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.putImageData(imageData, 0, 0);
+    }
+    
+    // Analyze the audio signal and extract relevant features
+    function analyzeAudio(audioCtx, stream) {
+      const analyser = audioCtx.createAnalyser();
+      source.connect(analyser);
+      analyser.fftSize = 256;
+      const freqs = new Uint8Array(analyser.frequencyBinCount);
+      const amplitudes = new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(freqs);
+      analyser.getByteAmplitudeData(amplitudes);
+      return { freqs, amplitudes };
+    }
+    
+    // Generate an image based on the noise vector and audio features
+    function generateImageWithSound(noiseVector, audioFeatures) {
+      // Adjust the noise vector based on the audio features
+      const adjustedNoiseVector = noiseVector.map((value, index) => {
+        const frequency = audioFeatures.freqs[index] / 128; // Scale frequency to [0, 1] range
+        const amplitude = audioFeatures.amplitudes[index] / 128; // Scale amplitude to [0, 1] range
+        return value + frequency * amplitude;
+      });
+      
+      // Use the adjusted noise vector to generate an image
+      const imageData = tf.browser.fromPixels(generateImage(adjustedNoiseVector));
+      return imageData;
+    }
+    
+    // Generate an image based on the noise vector
+    function generateImage(noiseVector) {
+      // Use the noise vector to generate an image
+      const imageData = tf.browser.fromPixels(tf.random.normal(noiseVector.length, 1, 0, 1));
+      return imageData;
+    }
+  </script>
+</body>
+  </html>
